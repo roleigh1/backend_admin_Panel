@@ -1,10 +1,10 @@
 const express = require('express');
-const { login } = require('../controllers/authController');
+const  logintest  = require('../controllers/authController');
 const counterDB = require('../controllers/countOrders');
 
 const router = express.Router();
 
-counterDB.countOrders() ; 
-router.post('/login', login);
+router.get("/counterDB", counterDB.countOrders) ; 
+router.post('/login', logintest.login);
 
 module.exports = router;
