@@ -6,5 +6,5 @@ const router = express.Router();
 
 router.get("/counterDB", counterDB.countOrders) ; 
 router.post('/login', logintest.login);
-
+console.log("authroute")
 module.exports = router;
