@@ -56,8 +56,13 @@ const Orders = sequelize.define("Orders", {
     location: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
-    },}
-    , {
+    },
+
+    createdAt: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: false,
+    },
+ }, {
         tableName: 'orders',
         timestamps: false
     });
