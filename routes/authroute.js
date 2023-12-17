@@ -5,7 +5,7 @@ const passport = require('passport');
 const router = express.Router();
 
 router.get("/counterDB",passport.authenticate("jwt", { session: false }), counterDB.countOrders) ; 
-router.get("/counterMonday", counterDB.countCreatedAt);
+router.get("/counterMonday",passport.authenticate("jwt" , {session: false}), counterDB.countCreatedAt);
 router.post('/login',  logintest.login);
 
 module.exports = router;
