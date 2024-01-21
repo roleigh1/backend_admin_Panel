@@ -4,8 +4,8 @@ const counterDB = require('../controllers/countOrders');
 const passport = require('passport');
 const router = express.Router();
 const displayLastOrder = require('../controllers/DisplayLastOrder')
-router.get("/counterDB",passport.authenticate("jwt", { session: false }), counterDB.countOrders) ; 
-router.get("/counterMonday",passport.authenticate("jwt" , {session: false}), counterDB.countCreatedAt);
+router.get("/counterDB",counterDB.countOrders) ; 
+router.get("/counterMonday", counterDB.countCreatedAt);
 router.post('/login',  logintest.login);
 router.get("/lastOrder",displayLastOrder.getlastOrder)
 

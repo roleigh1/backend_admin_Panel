@@ -3,21 +3,21 @@ const { Orders } = require('../models/models');
 
 const getlastOrder = async (req, res) => {
     try {
-        const lastRecord = await Orders.findOne({
+        const lastRecord = await Orders.findAll({
             order: [['id', 'DESC']],
+            limit:5,
         });
 
-        if (lastRecord) {
-          
-            lastRecord.toJSON();
-            const lastOrderDetails = {
-                id: lastRecord.id,
-                email: lastRecord.email,
-                items: lastRecord.item,
-                totalPrice: lastRecord.total,
-                pickupdate: lastRecord.pickupdate,
-                created: lastRecord.createdAt
-            }
+        if (lastRecord && lastRecord.length > 0) {
+      
+            const lastOrderDetails = lastRecord.map((record) => ({
+                id: record.id,
+                email: record.email,
+                items: record.item,
+                totalPrice: record.total,
+                pickupdate: record.pickupdate,
+                created: record.createdAt,
+            }));
             console.log(lastOrderDetails); 
             res.json(lastOrderDetails)
         } else {
