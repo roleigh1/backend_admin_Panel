@@ -8,8 +8,20 @@ const displayLastOrder = require('../controllers/DisplayLastOrder')
 router.get("/counterDB",counterDB.countOrders) ; 
 router.get("/counterMonday", counterDB.countCreatedAt);
 router.post('/login',  logintest.login);
-router.get("/lastOrder",displayLastOrder.getlastOrder)
-salesReport.getTotalPricePerJan();
+router.get("/lastOrder",displayLastOrder.getlastOrder);
+router.get("/totalPrice",salesReport.getTotalPrice);
+router.get("/totalJan",salesReport.getTotalJan);
+router.get("/totalFeb",salesReport.getTotalFeb);
+router.get("/totalMar",salesReport.getTotalMar);
+router.get("/totalApr",salesReport.getTotalApr);
+router.get("/totalMay",salesReport.getTotalMay);
+router.get("/totalJun",salesReport.getTotalJune);
+router.get("/totalJul",salesReport.getTotalJuly);
+router.get("/totalAug",salesReport.getTotalAug);
+router.get("/totalSep",salesReport.getTotalSep);
+router.get("/totalOct",salesReport.getTotalOct);
+router.get("/totalNov",salesReport.getTotalNov);
+router.get("/totalDec",salesReport.getTotalDec);
 
 module.exports = router;
 
