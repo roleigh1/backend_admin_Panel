@@ -124,7 +124,7 @@ const getTotalMay = async (req,res) => {
         console.error('Error: ', error);
     }
 }
-const getTotalJune = async (res) => {
+const getTotalJune = async (req,res) => {
     const startDate = new Date('2023-06-01');
     const endDate = new Date('2023-06-30');
     try {
@@ -139,12 +139,12 @@ const getTotalJune = async (res) => {
         const jun = sumJun.reduce((a, b) => {
             return a + b.total;
         }, 0)
-        res.json(jun)
+        res.json({jun})
     } catch (error) {
         console.error('Error: ', error);
     }
 }
-const getTotalJuly = async (res) => {
+const getTotalJuly = async (req,res) => {
     const startDate = new Date('2023-07-01');
     const endDate = new Date('2023-07-31');
     try {
@@ -159,12 +159,12 @@ const getTotalJuly = async (res) => {
        const jul = sumJul.reduce((a, b) => {
             return a + b.total;
         }, 0)
-        res.json(jul); 
+        res.json({jul}); 
     } catch (error) {
         console.error('Error: ', error);
     }
 }
-const getTotalAug = async (res) => {
+const getTotalAug = async (req,res) => {
     const startDate = new Date('2023-08-01');
     const endDate = new Date('2023-08-31');
     try {
@@ -179,11 +179,12 @@ const getTotalAug = async (res) => {
         const aug = sumAug.reduce((a, b) => {
             return a + b.total;
         }, 0)
+        res.json({aug})
     } catch (error) {
         console.error('Error: ', error);
     }
 }
-const getTotalSep = async (res) => {
+const getTotalSep = async (req,res) => {
     const startDate = new Date('2023-09-01');
     const endDate = new Date('2023-09-30');
     try {
@@ -199,12 +200,12 @@ const getTotalSep = async (res) => {
         const sep = sumSep.reduce((a, b) => {
             return a + b.total;
         }, 0)
-        res.json(sep)
+        res.json({sep})
     } catch (error) {
         console.error('Error: ', error);
     }
 }
-const getTotalOct = async (res) => {
+const getTotalOct = async (req,res) => {
     const startDate = new Date('2023-10-01');
     const endDate = new Date('2023-10-31');
     try {
@@ -219,16 +220,16 @@ const getTotalOct = async (res) => {
        const oct = sumOct.reduce((a, b) => {
             return a + b.total;
         }, 0)
-        res.json(oct); 
+        res.json({oct}); 
     } catch (error) {
         console.error('Error: ', error);
     }
 }
-const getTotalNov = async (res) => {
+const getTotalNov = async (req,res) => {
     const startDate = new Date('2023-11-01');
     const endDate = new Date('2023-11-30');
     try {
-        const sumNov = await Orders.findAll({
+        const sumNov = await Orders.findAll({       
             attributes: ['total'],
             where: {
                 createdAt: {
@@ -239,12 +240,12 @@ const getTotalNov = async (res) => {
         const nov = sumNov.reduce((a, b) => {
             return a + b.total;
         }, 0)
-        res.json(nov)
+        res.json({nov})
     } catch (error) {
         console.error('Error: ', error);
     }
 }
-const getTotalDec = async (res) => {
+const getTotalDec = async (req,res) => {
     const startDate = new Date('2023-12-01');
     const endDate = new Date('2023-12-31');
     try {
@@ -260,7 +261,7 @@ const getTotalDec = async (res) => {
         const dec = sumDec.reduce((a, b) => {
             return a + b.total;
         }, 0)
-        res.json(dec)
+        res.json({dec})
     } catch (error) {
         console.error('Error: ', error);
     }
