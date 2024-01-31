@@ -1,15 +1,28 @@
 
 const { ProductsDB, BestSellerItemsDB } = require("../models/models");
 
+const uploadImage = async (req,res) => {
+    try{
+      if(!req.file) {
+          return res.status(400).json({ error:"No image provided"}); 
+      }
+     var imagePath = req.file.path;
+      console.log(imagePath); 
+    } catch (error) {
+      console.error(error); 
+    }
+  
+  }
 
-const insertNewProduct = async (req, res) => {
+const insertNewProduct = async (req, res,imagePath) => {
     const insertData = req.body.insertData;
+    
     if(insertData.where === "products") {
       
             const Product = await ProductsDB.create({
                 name:insertData.name,
                 price:Number(insertData.price),
-                image:"test",
+                image:imagePath,
                 type:insertData.type,
 
             });
@@ -25,7 +38,12 @@ const insertNewProduct = async (req, res) => {
         })
         console.log("Product generated ID:",Bestseller.id)
     }
+    
+   
 }
+
+
 module.exports = {
     insertNewProduct,
+    uploadImage 
 }

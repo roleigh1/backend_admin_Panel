@@ -4,8 +4,12 @@ const counterDB = require('../controllers/countOrders');
 const salesReport = require('../controllers/SalesReport')
 const passport = require('passport');
 const router = express.Router();
+const  multer = require("multer");
 const insertData = require("../controllers/getInsertData")
 const displayLastOrder = require('../controllers/DisplayLastOrder')
+
+const upload = multer({ dest: "uploads/" });
+
 router.get("/counterDB",counterDB.countOrders) ; 
 router.get("/counterMonday", counterDB.countCreatedAt);
 router.post('/login',  logintest.login);
@@ -24,6 +28,7 @@ router.get("/totalOct",salesReport.getTotalOct);
 router.get("/totalNov",salesReport.getTotalNov);
 router.get("/totalDec",salesReport.getTotalDec);
 router.post("/insertData",insertData.insertNewProduct); 
+router.post("/uploadImage",upload.single("image"), insertData.uploadImage)
 
 
 module.exports = router;
