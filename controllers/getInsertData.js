@@ -1,49 +1,62 @@
 
+const  multer = require("multer");
+const path = require('path');
 const { ProductsDB, BestSellerItemsDB } = require("../models/models");
 
-const uploadImage = async (req,res) => {
-    try{
-      if(!req.file) {
-          return res.status(400).json({ error:"No image provided"}); 
-      }
-     var imagePath = req.file.path;
-      console.log(imagePath); 
-    } catch (error) {
-      console.error(error); 
-    }
-  
-  }
+const storage = multer.diskStorage({
+    destination: (req,file,cb) => {
+        cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
 
-const insertNewProduct = async (req, res,imagePath) => {
-    const insertData = req.body.insertData;
-    
+        cb(null,file.originalname);
+    },
+});
+const upload = multer({ storage }); 
+
+const uploadImage = (req, res) => {
+    upload.single('image')(req, res, (err) => {
+
+        if (err) {
+            return res.status(400).json({ message: 'Upload failed', error: err.message });
+          }
+          return res.json({ message: 'Upload successful' });
+        })
+ 
+  };
+      /*
+  const insertNewProduct =  async (req,res) => {
     if(insertData.where === "products") {
       
-            const Product = await ProductsDB.create({
-                name:insertData.name,
-                price:Number(insertData.price),
-                image:imagePath,
-                type:insertData.type,
-
-            });
-            console.log("Product generated ID:",Product.id);
-  
-     
-    } else {
-        const Bestseller = await BestSellerItemsDB.create({
+        const Product = await ProductsDB.create({
             name:insertData.name,
             price:Number(insertData.price),
-            image:"test",
+            image:imagePath,
             type:insertData.type,
-        })
-        console.log("Product generated ID:",Bestseller.id)
-    }
-    
-   
+
+        });
+        console.log("Product generated ID:",Product.id);
+
+ 
+} else {
+    const Bestseller = await BestSellerItemsDB.create({
+        name:insertData.name,
+        price:Number(insertData.price),
+        image:"test",
+        type:insertData.type,
+    })
+    console.log("Product generated ID:",Bestseller.id)
 }
+
+  }
+
+
+   */
+
 
 
 module.exports = {
-    insertNewProduct,
-    uploadImage 
+
+
+    uploadImage,
 }

@@ -11,5 +11,9 @@ app.use(cors());
 const routes = require('./routes/authroute');
 
 app.use("/api", routes,passport.initialize());
+app.use(express.static("public"));
+app.use("/uploads",express.static("uploads"));
+
+
 
 module.exports = app;
