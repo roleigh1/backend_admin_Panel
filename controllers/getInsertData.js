@@ -20,6 +20,16 @@ const uploadImage = (req, res) => {
         if (err) {
             return res.status(400).json({ message: 'Upload failed', error: err.message });
           }
+       
+          const { type, price, name, where } = req.body;
+          const imagePath = path.join(__dirname, 'uploads', req.file.originalname);
+
+        console.log("Image received");
+        console.log("Type:", type);
+        console.log("Price:", price);
+        console.log("Name:", name);
+        console.log("Where:", where)
+        console.log("Image path", imagePath); 
           return res.json({ message: 'Upload successful' });
         })
  
@@ -56,7 +66,5 @@ const uploadImage = (req, res) => {
 
 
 module.exports = {
-
-
     uploadImage,
 }
