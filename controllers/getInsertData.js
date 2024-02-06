@@ -29,20 +29,22 @@ const uploadImage = (req, res) => {
         console.log("Price:", price);
         console.log("Name:", name);
         console.log("Where:", where)
-        console.log("Image path", imagePath); 
+        console.log("Image path", typeof(imagePath)); 
+        insertNewProduct(where, name, type, price, imagePath)
           return res.json({ message: 'Upload successful' });
         })
  
   };
-      /*
-  const insertNewProduct =  async (req,res) => {
-    if(insertData.where === "products") {
       
+  const insertNewProduct =  async (where, name, type, price, imagePath) => {
+    if(where === "products") {
+      console.log("yuhu")
+
         const Product = await ProductsDB.create({
-            name:insertData.name,
-            price:Number(insertData.price),
+            name:name,
+            price:Number(price),
             image:imagePath,
-            type:insertData.type,
+            type:type
 
         });
         console.log("Product generated ID:",Product.id);
@@ -50,18 +52,19 @@ const uploadImage = (req, res) => {
  
 } else {
     const Bestseller = await BestSellerItemsDB.create({
-        name:insertData.name,
-        price:Number(insertData.price),
-        image:"test",
-        type:insertData.type,
+        name:name,
+        price:Number(price),
+        image:imagePath,
+        type:type,
     })
     console.log("Product generated ID:",Bestseller.id)
+    
 }
 
   }
 
 
-   */
+   
 
 
 
