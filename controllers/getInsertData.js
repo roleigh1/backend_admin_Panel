@@ -1,41 +1,59 @@
-
-const  multer = require("multer");
-const path = require('path');
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const multer = require("multer");
 const { ProductsDB, BestSellerItemsDB } = require("../models/models");
 
-const storage = multer.diskStorage({
-    destination: (req,file,cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
 
-        cb(null,file.originalname);
-    },
+
+const s3Client = new S3Client({
+  credentials: {
+    accessKeyId: "AKIAVDJKHJPMCTIIOLGR",
+    secretAccessKey: "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",
+  },
+  region: 'eu-central-1',
 });
-const upload = multer({ storage }); 
+
+const upload = multer({
+  storage: multer.memoryStorage(), // Speichert das Bild im Arbeitsspeicher anstatt auf dem Server
+});
 
 const uploadImage = (req, res) => {
-    upload.single('image')(req, res, (err) => {
+  upload.single('image')(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ message: 'Upload failed', error: err.message });
+    }
 
-        if (err) {
-            return res.status(400).json({ message: 'Upload failed', error: err.message });
-          }
-       
-          const { type, price, name, where } = req.body;
-          const imagePath = path.join(__dirname, 'uploads', req.file.originalname);
+    const { type, price, name, where } = req.body;
 
-        console.log("Image received");
-        console.log("Type:", type);
-        console.log("Price:", price);
-        console.log("Name:", name);
-        console.log("Where:", where)
-        console.log("Image path", typeof(imagePath)); 
-        insertNewProduct(where, name, type, price, imagePath)
-          return res.json({ message: 'Upload successful' });
-        })
- 
-  };
-      
+    try {
+      const params = {
+        Bucket: 'myfirstbucked1',
+        Key: `${Date.now()}-${req.file.originalname}`,
+        Body: req.file.buffer, // Der Binärdatenstrom des Bildes aus dem Arbeitsspeicher
+        ACL: 'public-read', // Optional, falls du die Datei öffentlich zugänglich machen möchtest
+      };
+
+      const command = new PutObjectCommand(params);
+
+      await s3Client.send(command);
+
+      console.log("Image received and uploaded to AWS S3");
+      console.log("Type:", type);
+      console.log("Price:", price);
+      console.log("Name:", name);
+      console.log("Where:", where);
+      console.log("Image URL:", `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
+
+      // Hier kannst du weitere Aktionen ausführen, wie z.B. das Speichern der Bild-URL in der Datenbank
+      await insertNewProduct(where, name, type, price, `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
+
+      return res.json({ message: 'Upload successful', imageUrl: `https://${params.Bucket}.s3.amazonaws.com/${params.Key}` });
+    } catch (error) {
+      console.error('Error uploading to AWS S3:', error);
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
+};
+
   const insertNewProduct =  async (where, name, type, price, imagePath) => {
     if(where === "products") {
       console.log("yuhu")
