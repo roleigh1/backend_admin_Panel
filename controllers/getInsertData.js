@@ -28,8 +28,8 @@ const uploadImage = (req, res) => {
       const params = {
         Bucket: 'myfirstbucked1',
         Key: `${Date.now()}-${req.file.originalname}`,
-        Body: req.file.buffer, // Der Binärdatenstrom des Bildes aus dem Arbeitsspeicher
-        ACL: 'public-read', // Optional, falls du die Datei öffentlich zugänglich machen möchtest
+        Body: req.file.buffer,  
+        ACL: 'public-read',
       };
 
       const command = new PutObjectCommand(params);
@@ -43,7 +43,7 @@ const uploadImage = (req, res) => {
       console.log("Where:", where);
       console.log("Image URL:", `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
 
-      // Hier kannst du weitere Aktionen ausführen, wie z.B. das Speichern der Bild-URL in der Datenbank
+
       await insertNewProduct(where, name, type, price, `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`);
 
       return res.json({ message: 'Upload successful', imageUrl: `https://${params.Bucket}.s3.amazonaws.com/${params.Key}` });
