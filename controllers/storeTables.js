@@ -18,5 +18,6 @@ const getBestsellerTable = async(req,res) => {
 
 }
 module.exports = {
-    getProductTable
+    getProductTable,
+    getBestsellerTable
 }
