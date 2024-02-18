@@ -6,7 +6,9 @@ const passport = require('passport');
 const router = express.Router();
 const  multer = require("multer");
 const insertData = require("../controllers/getInsertData")
-const displayLastOrder = require('../controllers/DisplayLastOrder')
+const displayLastOrder = require('../controllers/DisplayLastOrder'); 
+const productsTable = require("../controllers/storeTables");
+
 
 
 
@@ -27,8 +29,7 @@ router.get("/totalSep",salesReport.getTotalSep);
 router.get("/totalOct",salesReport.getTotalOct);
 router.get("/totalNov",salesReport.getTotalNov);
 router.get("/totalDec",salesReport.getTotalDec);
-//router.post("/insertData",insertData.insertNewProduct); 
-
+router.get("/productsTable", productsTable.getProductTable); 
 router.post("/upload", insertData.uploadImage)
 
 

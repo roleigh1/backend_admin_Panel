@@ -13,7 +13,7 @@ const s3Client = new S3Client({
 });
 
 const upload = multer({
-  storage: multer.memoryStorage(), // Speichert das Bild im Arbeitsspeicher anstatt auf dem Server
+  storage: multer.memoryStorage(), 
 });
 
 const uploadImage = (req, res) => {
