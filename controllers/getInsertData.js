@@ -1,6 +1,6 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const multer = require("multer");
-const { ProductsDB, BestSellerItemsDB } = require("../models/models");
+const { ProductsDB, BestSellerItemsDB , sequelize} = require("../models/models");
 
 
 
@@ -57,8 +57,15 @@ const uploadImage = (req, res) => {
   const insertNewProduct =  async (where, name, type, price, imagePath) => {
     if(where === "products") {
       console.log("yuhu")
-
+      const ProductId = await ProductsDB.findOne({
+        attributes: [
+          [sequelize.fn('max', sequelize.col('id')), 'lastId']
+        ],
+      });
+      let lastId = ProductId.get('lastId');
+      console.log(lastId); 
         const Product = await ProductsDB.create({
+            id: lastId+1, 
             name:name,
             price:Number(price),
             image:imagePath,

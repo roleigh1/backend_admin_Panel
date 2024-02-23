@@ -5,7 +5,8 @@ const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize(process.env.MYSQL_DATABASE,process.env.MYSQL_USER,process.env.MYSQL_PASSWORD, {
     host: "localhost",
-    dialect: 'mysql'
+    dialect: 'mysql',
+    logging:false,
 });
 async function authDb() {
     try {
@@ -17,6 +18,11 @@ async function authDb() {
 }
 authDb();
 const ProductsDB = sequelize.define("Product", {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: false,
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -108,4 +114,4 @@ const Orders = sequelize.define("Orders", {
         timestamps: false
     });
 
-module.exports = { User,Orders,ProductsDB,BestSellerItemsDB  };
+module.exports = { User,Orders,ProductsDB,BestSellerItemsDB ,sequelize };

@@ -1,5 +1,5 @@
 const {ProductsDB, BestSellerItemsDB} = require("../models/models"); 
-
+const {Op} = require("sequelize")
 const getProductTable = async(req,res) => {
     try {
         const products = await ProductsDB.findAll(); 
@@ -25,10 +25,13 @@ const getDeleteID = async(req,res) => {
    
     const DeleteFromDB = await ProductsDB.destroy({
       where:{
-       id: idForDelete
+       id:{
+      [Op.in] : idForDelete
+       } 
       }
     })
 
+    
   } catch (error) {
     console.error("Error receiving selected ID",error); 
     res.status(400).json({message:"Error sending post request"})
