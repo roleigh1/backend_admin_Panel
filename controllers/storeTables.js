@@ -17,7 +17,26 @@ const getBestsellerTable = async(req,res) => {
   }
 
 }
+const getDeleteID = async(req,res) => {
+  try {
+    const { idForDelete } = req.body;
+    console.log("Selected Id recived", idForDelete); 
+    res.status(200).json({message:"Got selected ID", idForDelete}); 
+   
+    const DeleteFromDB = await ProductsDB.destroy({
+      where:{
+       id: idForDelete
+      }
+    })
+
+  } catch (error) {
+    console.error("Error receiving selected ID",error); 
+    res.status(400).json({message:"Error sending post request"})
+  }
+
+}
 module.exports = {
     getProductTable,
-    getBestsellerTable
+    getBestsellerTable,
+    getDeleteID
 }

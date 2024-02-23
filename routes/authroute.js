@@ -32,6 +32,7 @@ router.get("/totalDec",salesReport.getTotalDec);
 router.get("/productsTable", storeInventory.getProductTable); 
 router.get("/bestsellerTable",storeInventory.getBestsellerTable); 
 router.post("/upload", insertData.uploadImage)
+router.post("/deleteID",storeInventory.getDeleteID); 
 
 
 module.exports = router;
