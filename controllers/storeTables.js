@@ -19,19 +19,28 @@ const getBestsellerTable = async(req,res) => {
 }
 const getDeleteID = async(req,res) => {
   try {
-    const { idForDelete } = req.body;
+    const { idForDelete,table } = req.body;
     console.log("Selected Id recived", idForDelete); 
+    console.log("Table recived:",table); 
     res.status(200).json({message:"Got selected ID", idForDelete}); 
    
-    const DeleteFromDB = await ProductsDB.destroy({
-      where:{
-       id:{
-      [Op.in] : idForDelete
-       } 
-      }
-    })
-
-    
+    if(table === "Bestseller"){
+      const DeleteFromBestseller = await BestSellerItemsDB.destroy({
+        where:{
+          id: {
+            [Op.in] : idForDelete
+          }
+        }
+      })
+    } else {
+      const DeleteFromProducts = await ProductsDB.destroy({
+        where:{
+         id:{
+        [Op.in] : idForDelete
+         } 
+        }
+      })
+    }    
   } catch (error) {
     console.error("Error receiving selected ID",error); 
     res.status(400).json({message:"Error sending post request"})
