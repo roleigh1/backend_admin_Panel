@@ -47,8 +47,29 @@ const getDeleteID = async(req,res) => {
   }
 
 }
+const getSelectID = async (req, res) => {
+  try {
+    let idForSelect = req.body.idForSelect;
+
+    console.log("Id received", idForSelect);
+    idForSelect = Number(idForSelect)
+    console.log("Type OF idForSelect", typeof idForSelect);
+
+    const SelectFromBestseller = await BestSellerItemsDB.findAll({
+      where: {
+        id: idForSelect
+      }
+    });
+
+    res.status(200).json({ message: "Got ID", SelectFromBestseller });
+  } catch (error) {
+    console.error("Error receiving ID", error);
+    res.status(400).json({ message: "Error sending get Req" });
+  }
+};
 module.exports = {
     getProductTable,
     getBestsellerTable,
-    getDeleteID
+    getDeleteID, 
+    getSelectID
 }

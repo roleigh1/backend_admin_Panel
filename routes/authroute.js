@@ -33,6 +33,7 @@ router.get("/productsTable", storeInventory.getProductTable);
 router.get("/bestsellerTable",storeInventory.getBestsellerTable); 
 router.post("/upload", insertData.uploadImage)
 router.post("/deleteID",storeInventory.getDeleteID); 
+router.post("/selectID",storeInventory.getSelectID); 
 
 
 module.exports = router;
