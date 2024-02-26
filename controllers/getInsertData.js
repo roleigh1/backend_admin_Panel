@@ -76,7 +76,14 @@ const uploadImage = (req, res) => {
 
  
 } else {
+  const lastBestSellerID = await BestSellerItemsDB.findOne({
+    attributes: [
+      [sequelize.fn('max', sequelize.col('id')), 'lastId']
+    ],
+  });
+  let lastBestseller = lastBestSellerID.get('lastId'); 
     const Bestseller = await BestSellerItemsDB.create({
+        id: lastBestseller+1,
         name:name,
         price:Number(price),
         image:imagePath,
