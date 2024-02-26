@@ -34,6 +34,7 @@ router.get("/bestsellerTable",storeInventory.getBestsellerTable);
 router.post("/upload", insertData.uploadImage)
 router.post("/deleteID",storeInventory.getDeleteID); 
 router.post("/selectID",storeInventory.getSelectID); 
+router.post("/updateData", storeInventory.updateTableData); 
 
 
 module.exports = router;
