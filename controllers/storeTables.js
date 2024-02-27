@@ -76,24 +76,41 @@ const getSelectID = async (req, res) => {
 
 const updateTableData = async (req, res) => {
   try {
-    const { editAbleData } = req.body;
+    const { editAbleData,table } = req.body;
     console.log("Received edited Data", editAbleData);
 
-    const editBestSellerData = await BestSellerItemsDB.update(
-      {
-        name: editAbleData.name,
-        price: editAbleData.price,
-        image: editAbleData.image,
-        type: editAbleData.type,
-      },
-      {
-        where: {
-          id: editAbleData.id,
+    if(table === "Bestseller"){
+      const editBestSellerData = await BestSellerItemsDB.update(
+        {
+          name: editAbleData.name,
+          price: editAbleData.price,
+          image: editAbleData.image,
+          type: editAbleData.type,
         },
-      }
-    );
+        {
+          where: {
+            id: editAbleData.id,
+          },
+        }
+      );
+  
+  
+    } else {
+      const editProductData = await ProductsDB.update(
+        {
+          name: editAbleData.name,
+          price: editAbleData.price,
+          image: editAbleData.image,
+          type: editAbleData.type,
+        }, 
+        {
+          where: {
+            id: editAbleData.id,
+          },
+        }
+      )
+    }
 
-    res.status(200).json({ message: "Edited data", editBestSellerData });
   } catch (error) {
     console.error("Error updating data", error);
     res.status(400).json({ message: "Error sending post request" });
