@@ -8,6 +8,7 @@ const  multer = require("multer");
 const insertData = require("../controllers/getInsertData")
 const displayLastOrder = require('../controllers/DisplayLastOrder'); 
 const storeInventory = require("../controllers/storeTables");
+const orders = require("../controllers/orders"); 
 
 
 
@@ -35,6 +36,7 @@ router.post("/upload", insertData.uploadImage)
 router.post("/deleteID",storeInventory.getDeleteID); 
 router.post("/selectID",storeInventory.getSelectID); 
 router.post("/updateData", storeInventory.updateTableData); 
+router.get("/orders", orders.getAllOrders); 
 
 
 module.exports = router;
