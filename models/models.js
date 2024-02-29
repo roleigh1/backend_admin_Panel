@@ -17,6 +17,39 @@ async function authDb() {
     }
 }
 authDb();
+const FinishedOrders = sequelize.define("Finishedorders", {
+    email: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+    },
+    item: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+    },
+
+    total: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+    },
+
+    pickupdate: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: false,
+    },
+
+    location: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+    },
+
+    createdAt: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: false,
+    },
+ }, {
+        tableName: 'orders',
+        timestamps: false
+      });
 const ProductsDB = sequelize.define("Product", {
     id: {
         type: Sequelize.INTEGER,
@@ -114,4 +147,4 @@ const Orders = sequelize.define("Orders", {
         timestamps: false
     });
 
-module.exports = { User,Orders,ProductsDB,BestSellerItemsDB ,sequelize };
+module.exports = { User,Orders,ProductsDB,BestSellerItemsDB ,sequelize ,FinishedOrders};

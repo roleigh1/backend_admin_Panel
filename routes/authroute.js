@@ -37,6 +37,7 @@ router.post("/deleteID",storeInventory.getDeleteID);
 router.post("/selectID",storeInventory.getSelectID); 
 router.post("/updateData", storeInventory.updateTableData); 
 router.get("/orders", orders.getAllOrders); 
+router.post("/orders" , orders.finishOrder); 
 
 
 module.exports = router;
