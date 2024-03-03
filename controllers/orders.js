@@ -19,18 +19,20 @@ const finishOrder = async (req, res) => {
     res.status(200).json({message:"order sucessful moved ", finishOrder})
 
     const findFinishedOrder = await Orders.findByPk(finishedOrderID);
+    console.log(findFinishedOrder); 
+    
     const finishedData = {
         email: findFinishedOrder.email,
         item: findFinishedOrder.item,
         total: findFinishedOrder.total,
-        pickupdata: finishedOrderID.pickupdata,
-        location : finishedOrderID.location,
+        pickupdate: findFinishedOrder.pickupdate,
+        location : findFinishedOrder.location,
         createdAt:findFinishedOrder.createdAt,
 
     }
 
        await FinishedOrders.create(finishedData); 
-    
+
 
 }
 

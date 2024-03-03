@@ -43,9 +43,15 @@ const FinishedOrders = sequelize.define("Finishedorders", {
     },
 
     createdAt: {
-        type: Sequelize.DataTypes.DATE,
+        type: DataTypes.DATE,
         allowNull: false,
-    },
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      },
  }, {
         tableName: 'orders',
         timestamps: false
@@ -137,11 +143,16 @@ const Orders = sequelize.define("Orders", {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
     },
-
-    createdAt: {
-        type: Sequelize.DataTypes.DATE,
-        allowNull: false,
-    },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,       
+     defaultValue: Sequelize.fn('NOW'),
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.fn('NOW'),
+        onUpdate: Sequelize.fn('NOW'),
+      },
  }, {
         tableName: 'orders',
         timestamps: false
