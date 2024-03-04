@@ -2,21 +2,20 @@ const { type } = require('os');
 const { Op } = require('sequelize'); 
 const { Orders } = require('../models/models');
 
+const moment = require("moment");
+function getLastMonday(){
+    let today = moment(); 
+    let dayOfWeek = today.day(); 
 
-let date = new Date();
-let day = date.getDate();
-let month = date.getMonth()
-let year = date.getFullYear(); 
-let dateToday = new Date(year, month, day);
-console.log(dateToday); 
-let dayOfWeek = dateToday.getDay(); 
-let differenceToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-let lastMonday = new Date(dateToday);
-lastMonday.setDate(dateToday.getDate() + differenceToMonday); 
+    let distanceToLastMonday = dayOfWeek === 0 ? 6 : dayOfWeek-1
+    let lastmonday = today.subtract(distanceToLastMonday ,'days'); 
+    return lastmonday.format('YYYY-MM-DD'); 
 
+}
 
-console.log(typeof lastMonday); 
+let lastMonday = getLastMonday(); 
 
+console.log(lastMonday);
 const countCreatedAt = async (lastMonday,res) => {
  const ordersCount = await Orders.count({
         where: {

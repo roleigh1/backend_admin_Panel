@@ -3,11 +3,10 @@ const multer = require("multer");
 const { ProductsDB, BestSellerItemsDB , sequelize} = require("../models/models");
 
 
-
 const s3Client = new S3Client({
   credentials: {
-    accessKeyId: "AKIAVDJKHJPMCTIIOLGR",
-    secretAccessKey: "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",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
   region: 'eu-central-1',
 });
