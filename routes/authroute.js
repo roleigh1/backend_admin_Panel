@@ -36,7 +36,7 @@ router.post("/upload", insertData.uploadImage)
 router.post("/deleteID",storeInventory.getDeleteID); 
 router.post("/selectID",storeInventory.getSelectID); 
 router.post("/updateData", storeInventory.updateTableData); 
-router.get("/myorders", orders.getAllOrders); 
+router.get("/orders", orders.getAllOrders); 
 router.post("/orders" , orders.finishOrder); 
 
 
