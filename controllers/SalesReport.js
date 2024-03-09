@@ -1,18 +1,10 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const { Orders } = require('../models/models');
-
 const getTotalMonth = async (req, res) => {
     try {
         const month = req.params.month.toLowerCase();
         console.log(month)
-        if (month === "total") {
-            const totalYear =  await Orders.findAll({
-                attributes:["total"]
-            })
-            const totalSum = totalYear.reduce((a,b) => a + b.total,0); 
-            res.json({totalSum}); 
-        } else {
             const { startDate, endDate } = getMonthDateRange(month);
 
             const sumResult = await Orders.findAll({
@@ -27,15 +19,12 @@ const getTotalMonth = async (req, res) => {
             const monthTotal = sumResult.reduce((a, b) => a + b.total, 0);
 
             res.json({ [month]: monthTotal });
-        }
+        
         } catch (error) {
             console.error(`Error fetching ${month}`, error);
             res.status(500).json({ error: `Error fetching ${month}` });
         }
-    
-     
   };
-
 const getMonthDateRange = (month) => {
     const year = 2023; 
     const monthMap = {
