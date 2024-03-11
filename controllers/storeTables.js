@@ -1,30 +1,34 @@
 const { ProductsDB, BestSellerItemsDB } = require("../models/models");
 const { Op } = require("sequelize")
-const getProductTable = async (req, res) => {
+const getInventoryTable = async (req, res) => {
   try {
-    const products = await ProductsDB.findAll();
-    res.json({ products })
+    const tablesParam = req.params.tables;
+    switch (tablesParam) {
+      case 'bestseller':
+        const bestseller = await BestSellerItemsDB.findAll();
+        res.json({ bestseller });
+        break;
+      case 'products':
+        const products = await ProductsDB.findAll();
+        res.json({ products });
+        break;
+      default:
+        console.log('default case');
+    }
   } catch (error) {
-    console.error("Error getting Products", error);
+    console.error('Error getting inventory Tables', error)
+    res.status(400).json({ message: 'Problem getting Inventory Tables', message });
   }
 }
-const getBestsellerTable = async (req, res) => {
-  try {
-    const bestseller = await BestSellerItemsDB.findAll();
-    res.json({ bestseller });
-  } catch (error) {
-    console.error("Error getting Bestseller", error);
-  }
 
-}
 const getDeleteID = async (req, res) => {
   try {
     const { idForDelete, table } = req.body;
     console.log("Selected Id recived", idForDelete);
     console.log("Table recived:", table);
     res.status(200).json({ message: "Got selected ID", idForDelete });
-
-    if (table === "Bestseller") {
+      switch(table) {
+        case 'Bestseller':
       const DeleteFromBestseller = await BestSellerItemsDB.destroy({
         where: {
           id: {
@@ -32,7 +36,8 @@ const getDeleteID = async (req, res) => {
           }
         }
       })
-    } else {
+        break; 
+      case 'Products': 
       const DeleteFromProducts = await ProductsDB.destroy({
         where: {
           id: {
@@ -40,7 +45,11 @@ const getDeleteID = async (req, res) => {
           }
         }
       })
-    }
+  
+    break;
+    default: 
+    console.log("nothing deleted"); 
+  }
   } catch (error) {
     console.error("Error receiving selected ID", error);
     res.status(400).json({ message: "Error sending post request" })
@@ -76,10 +85,10 @@ const getSelectID = async (req, res) => {
 
 const updateTableData = async (req, res) => {
   try {
-    const { editAbleData,table } = req.body;
+    const { editAbleData, table } = req.body;
     console.log("Received edited Data", editAbleData);
 
-    if(table === "Bestseller"){
+    if (table === "Bestseller") {
       const editBestSellerData = await BestSellerItemsDB.update(
         {
           name: editAbleData.name,
@@ -93,8 +102,8 @@ const updateTableData = async (req, res) => {
           },
         }
       );
-  
-  
+
+
     } else {
       const editProductData = await ProductsDB.update(
         {
@@ -102,7 +111,7 @@ const updateTableData = async (req, res) => {
           price: editAbleData.price,
           image: editAbleData.image,
           type: editAbleData.type,
-        }, 
+        },
         {
           where: {
             id: editAbleData.id,
@@ -117,8 +126,7 @@ const updateTableData = async (req, res) => {
   }
 };
 module.exports = {
-  getProductTable,
-  getBestsellerTable,
+  getInventoryTable,
   getDeleteID,
   getSelectID,
   updateTableData

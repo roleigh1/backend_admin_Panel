@@ -13,14 +13,15 @@ const orders = require("../controllers/orders");
 
 
 
-router.get("/counterDB",counterDB.countOrders) ; 
-router.get("/counterMonday", counterDB.countCreatedAt);
+router.get("/counter", counterDB.countOperation);
 router.post('/login',  logintest.login);
 router.get("/lastOrder",displayLastOrder.getlastOrder);
 router.get("/totalMonths/:month",salesReport.getTotalMonth);
 router.post("/deleteID",storeInventory.getDeleteID); 
 router.post("/selectID",storeInventory.getSelectID); 
 router.post("/updateData", storeInventory.updateTableData); 
+router.get("/inventoryTables/:tables",storeInventory.getInventoryTable); 
+router.post("/upload", insertData.uploadImage)
 router.get("/orders", orders.getAllOrders); 
 router.post("/orders" , orders.finishOrder); 
 

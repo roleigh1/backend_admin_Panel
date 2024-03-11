@@ -16,28 +16,29 @@ function getLastMonday(){
 let lastMonday = getLastMonday(); 
 
 console.log(lastMonday);
-const countCreatedAt = async (lastMonday,res) => {
- const ordersCount = await Orders.count({
+const countOperation = async (lastMonday,res) => {
+try{
+    const ordersCountLastMonday = await Orders.count({
         where: {
             createdAt: {
                 [Op.gte]: lastMonday
             }
         }                                     
  })
-    res.json({ CountCreatedAt: ordersCount });
-    console.log(ordersCount);
+ const countOrder = await Orders.count() ;
+
+ const counterOp= {
+    ordersCountLastMonday,
+    countOrder
+ }
+ res.json({counterOp})
+} catch (error) {
+    console.error("Error Counting ", error ); 
+    res.status(400).json({message: error }); 
+}
+ 
 }
 
 
-const countOrders = async (req, res) => {
-    Orders.count().then(count => {
-        res.json({ result:count});
 
-    })
-    .catch(err => {
-        console.log("Error when Counting Orders", err); 
-        res.status(500).json({ message: 'Error when Counting Orders', error: err });
-    })
-
-}
-module.exports = { countOrders, countCreatedAt }
+module.exports = { countOperation }
