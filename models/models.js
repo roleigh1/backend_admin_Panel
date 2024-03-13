@@ -19,41 +19,41 @@ authDb();
 const FinishedOrders = sequelize.define("Finishedorders", {
     email: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     item: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     total: {
         type: Sequelize.DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
 
     pickupdate: {
         type: Sequelize.DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
 
     location: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
     updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+        allowNull: true,
+        timestamps:true
       },
  }, {
         tableName: 'orders',
-        timestamps: false
+        timestamps: true
       });
 const ProductsDB = sequelize.define("Product", {
     id: {
