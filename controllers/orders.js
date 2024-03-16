@@ -20,29 +20,29 @@ const finishOrder = async (req, res) => {
     try {
         const { finishedOrderID } = req.body;
         const oldOrder = await Orders.findAll({
-            where: finishedOrderID
-        })
-        const newOldOrder = oldOrder.map(item => ({
-            id: item.id,
-            email: item.email,
-            item: item.item,
-            total: item.total,
-            pickupdate: item.pickupdate,
-            location: item.location,
+            where: {
+                id: finishedOrderID
+            }
+        }); 
+        const finishedOrder = await FinishedOrders.bulkCreate({
+                id:oldOrder.id,
+                email:oldOrder.email,
+                item:oldOrder.item,
+                total:oldOrder.total,
+                pickupdate:oldOrder.pickupdate,
+                location:oldOrder.location
 
-        }))
-        console.log("New Old Order", newOldOrder);
-        const finishedOrder = await FinishedOrders.create({
-            email: newOldOrder.email,
-            item: newOldOrder.item,
-            total: newOldOrder.total,
-            pickupdate: newOldOrder.pickupdate,
-            location: newOldOrder.location,
         });
-        res.status(200).json({ message: "Selected Order", finishedOrder });
+        res.status(200).json({ message: "Selected Order", finishedOrder});
+        const deleteFinishedOrder = await Orders.destroy({
+            where: {
+                id: finishedOrderID, 
+            }
+        })
+        console.log("Finished order is deleted", deleteFinishedOrder); 
     } catch (error) {
         console.error("Error getting old order", error);
-        res.status(400).json({ message: "Error getting old Order", error });
+        res.status(400).json({ message: "Error getting old Order", error});
     }
 }
 

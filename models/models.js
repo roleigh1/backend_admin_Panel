@@ -17,6 +17,11 @@ async function authDb() {
 }
 authDb();
 const FinishedOrders = sequelize.define("Finishedorders", {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: false,
+    },
     email: {
         type: Sequelize.DataTypes.STRING,
         allowNull: true,
@@ -40,19 +45,13 @@ const FinishedOrders = sequelize.define("Finishedorders", {
         type: Sequelize.DataTypes.STRING,
         allowNull: true,
     },
-
-    createdAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      },
     updatedAt: {
         type: DataTypes.DATE,
         allowNull: true,
         timestamps:true
       },
  }, {
-        tableName: 'orders',
+        tableName: 'finishedorders',
         timestamps: true
       });
 const ProductsDB = sequelize.define("Product", {
