@@ -1,6 +1,10 @@
 
 const { Orders, FinishedOrders } = require("../models/models");
 
+
+
+
+
 const getAllOrders = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -19,30 +23,29 @@ const getAllOrders = async (req, res) => {
 const finishOrder = async (req, res) => {
     try {
         const { finishedOrderID } = req.body;
-        const oldOrder = await Orders.findAll({
+        const oldOrders = await Orders.findAll({
             where: {
                 id: finishedOrderID
             }
-        }); 
-        const finishedOrder = await FinishedOrders.bulkCreate({
-                id:oldOrder.id,
-                email:oldOrder.email,
-                item:oldOrder.item,
-                total:oldOrder.total,
-                pickupdate:oldOrder.pickupdate,
-                location:oldOrder.location
-
         });
-        res.status(200).json({ message: "Selected Order", finishedOrder});
+        const finishedOrders = await FinishedOrders.bulkCreate(oldOrders.map(oldOrder => ({
+            id: oldOrder.id,
+            email: oldOrder.email,
+            item: oldOrder.item,
+            total: oldOrder.total,
+            pickupdate: oldOrder.pickupdate,
+            location: oldOrder.location
+        })));
+        res.status(200).json({ message: "Selected Order", finishedOrders });
         const deleteFinishedOrder = await Orders.destroy({
             where: {
-                id: finishedOrderID, 
+                id: finishedOrderID,
             }
         })
-        console.log("Finished order is deleted", deleteFinishedOrder); 
+        console.log("Finished order is deleted", deleteFinishedOrder);
     } catch (error) {
         console.error("Error getting old order", error);
-        res.status(400).json({ message: "Error getting old Order", error});
+        res.status(400).json({ message: "Error getting old Order", error });
     }
 }
 
