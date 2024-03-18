@@ -10,11 +10,20 @@ const getAllOrders = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.pageSize) || 10;
         const offset = (page - 1) * pageSize;
-        const allOrders = await Orders.findAll({
-            offset,
-            limit: pageSize,
-        });
-        res.status(200).json({ allOrders })
+        let orders; 
+        if(req.query.type === "new") {
+            orders = await Orders.findAll({
+                offset,
+                limit: pageSize
+            })
+        } else {
+            orders = await FinishedOrders.findAll({
+                offset,
+                limit: pageSize
+    
+            })
+        } 
+        res.status(200).json({ orders });
     } catch (error) {
         console.error("Error getting all orders", error);
         res.status(400).json({ message: "Error sending Data", error: error.message });
@@ -22,10 +31,11 @@ const getAllOrders = async (req, res) => {
 }
 const finishOrder = async (req, res) => {
     try {
-        const { finishedOrderID } = req.body;
+        const { finishOrderId } = req.body;
+        console.log(finishOrderId);
         const oldOrders = await Orders.findAll({
             where: {
-                id: finishedOrderID
+                id: finishOrderId
             }
         });
         const finishedOrders = await FinishedOrders.bulkCreate(oldOrders.map(oldOrder => ({
@@ -39,10 +49,11 @@ const finishOrder = async (req, res) => {
         res.status(200).json({ message: "Selected Order", finishedOrders });
         const deleteFinishedOrder = await Orders.destroy({
             where: {
-                id: finishedOrderID,
+                id:finishOrderId
             }
         })
         console.log("Finished order is deleted", deleteFinishedOrder);
+
     } catch (error) {
         console.error("Error getting old order", error);
         res.status(400).json({ message: "Error getting old Order", error });
