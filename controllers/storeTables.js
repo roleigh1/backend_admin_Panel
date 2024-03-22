@@ -1,4 +1,4 @@
-const { ProductsDB, BestSellerItemsDB } = require("../models/models");
+const { ProductsDB, BestSellerItemsDB, FinishedOrders } = require("../models/models");
 const { Op } = require("sequelize")
 const getInventoryTable = async (req, res) => {
   try {
@@ -20,36 +20,46 @@ const getInventoryTable = async (req, res) => {
     res.status(400).json({ message: 'Problem getting Inventory Tables', message });
   }
 }
-
 const getDeleteID = async (req, res) => {
   try {
-    const { idForDelete, table } = req.body;
-    console.log("Selected Id recived", idForDelete);
+    let { idForDelete, table,idForDeleteOrders,tableOrders} = req.body;
+    if (table === undefined) {
+      table = tableOrders
+    }
     console.log("Table recived:", table);
-    res.status(200).json({ message: "Got selected ID", idForDelete });
-      switch(table) {
-        case 'Bestseller':
-      const DeleteFromBestseller = await BestSellerItemsDB.destroy({
-        where: {
-          id: {
-            [Op.in]: idForDelete
+
+    switch (table) {
+      case 'Bestseller':
+        const DeleteFromBestseller = await BestSellerItemsDB.destroy({
+          where: {
+            id: {
+              [Op.in]: idForDelete
+            }
           }
-        }
-      })
-        break; 
-      case 'Products': 
-      const DeleteFromProducts = await ProductsDB.destroy({
-        where: {
-          id: {
-            [Op.in]: idForDelete
+        })
+        break;
+      case 'Products':
+        const DeleteFromProducts = await ProductsDB.destroy({
+          where: {
+            id: {
+              [Op.in]: idForDelete
+            }
           }
-        }
-      })
-  
-    break;
-    default: 
-    console.log("nothing deleted"); 
-  }
+        })
+        break;
+      case 'finished':
+        const DeleteFromFinishedProducts = await FinishedOrders.destroy({
+          where: {
+            id: {
+              [Op.in]: idForDeleteOrders
+            }
+          }
+        })
+      default:
+        console.log("nothing deleted");
+    }
+
+    res.status(200).json({ message: "Data deleted from", table });
   } catch (error) {
     console.error("Error receiving selected ID", error);
     res.status(400).json({ message: "Error sending post request" })
